@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Weather - My City</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #87ceeb, #ffffff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #333;
+    }
+    .container {
+      text-align: center;
+      padding: 20px;
+      border-radius: 16px;
+      background-color: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .temp {
+      font-size: 48px;
+      font-weight: bold;
+    }
+    .desc {
+      font-size: 24px;
+      margin-top: 10px;
+      text-transform: capitalize;
+    }
+    .icon {
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Weather in My City</h2>
+    <img class="icon" id="icon" src="" alt="weather icon">
+    <div class="temp" id="temp">--°C</div>
+    <div class="desc" id="desc">Loading...</div>
+  </div>
+
+  <script>
+    fetch('/weather')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('temp').innerText = `${data.temp}°C`;
+        document.getElementById('desc').innerText = data.description;
+        document.getElementById('icon').src = 'http://openweathermap.org/img/wn/${data.icon}@2x.png';
+      })
+      .catch(() => {
+        document.getElementById('desc').innerText = 'Error fetching weather';
+      });
+  </script>
+</body>
+</html>
