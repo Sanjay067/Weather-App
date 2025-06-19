@@ -1,38 +1,45 @@
 const express = require('express');
-const axios = require('axios');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const axios = require('axios');
+const path = require('path');
 
-// ✅ Your OpenWeatherMap API key
+const port = process.env.PORT || 3000;
+
+app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'public')));
+app.set('views', path.join(__dirname, 'views'));
+
 const API_KEY = '6646e501d4e61834e3c8c5109e3a6636';
+const lat = '12.772593';
+const lon = '77.812062';
 
-// 🌍 Fixed location: Bengaluru example
-const lat = '12.776753';
-const lon = '77.5977.817310';
-
-// 🔧 Serve HTML from /public folder
-app.use(express.static('public'));
-
-// 📡 Weather API route
 app.get('/weather', async (req, res) => {
   try {
     const result = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
     );
-
-    const data = result.data;
-    res.json({
-      temp: data.main.temp,
-      description: data.weather[0].description,
-      icon: data.weather[0].icon,
-    });
+    const data = result.data.list;
+    res.render('index.ejs', { data });
   } catch (err) {
     console.error('Error fetching weather:', err.message);
-    res.status(500).json({ error: 'Unable to fetch weather data'});
+    res.status(500).json({ error: 'Unable to fetch weather data' });
   }
 });
 
-// ▶ Start the server
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+app.get('/', (req, res) => {
+  res.redirect('/weather');
 });
+
+app.listen(port, () => {
+  console.log('App is Listening');
+});
+
+
+
+
+
+
+
+
+
+
