@@ -69,11 +69,6 @@ body {
   font-style: italic;
 }
 
-.rain img {
-  vertical-align: middle;
-  margin-right: 8px;
-}
-
 .date, .time {
   color: #388e3c;
   background: #e3fcec;
@@ -112,4 +107,9 @@ hr {
   border-top: 2px solid #90caf9;
   margin: 24px auto 0 auto;
   width: 60%;
+}
+
+.humidity {
+  color: #d84315;
+
 }
